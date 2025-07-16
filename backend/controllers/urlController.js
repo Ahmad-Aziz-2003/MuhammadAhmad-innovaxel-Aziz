@@ -27,5 +27,15 @@ exports.retrieve = async (req, res) => {
   res.status(200).json(urlData);
 };
 
+// Update URL
+exports.update = async (req, res) => {
+  const updated = await Url.findOneAndUpdate(
+    { shortCode: req.params.shortCode },
+    { url: req.body.url },
+    { new: true }
+  );
+  if (!updated) return res.status(404).json({ error: 'Short URL not found' });
 
+  res.status(200).json(updated);
+};
 
