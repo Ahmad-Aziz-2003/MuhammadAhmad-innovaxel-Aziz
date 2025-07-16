@@ -16,3 +16,16 @@ exports.create = async (req, res) => {
   }
 };
 
+// Get Original URL and increment count
+exports.retrieve = async (req, res) => {
+  const urlData = await Url.findOne({ shortCode: req.params.shortCode });
+  if (!urlData) return res.status(404).json({ error: 'Short URL not found' });
+
+  urlData.accessCount += 1;
+  await urlData.save();
+
+  res.status(200).json(urlData);
+};
+
+
+
