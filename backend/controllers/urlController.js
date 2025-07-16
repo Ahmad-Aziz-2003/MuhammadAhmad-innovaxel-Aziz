@@ -39,13 +39,14 @@ exports.update = async (req, res) => {
   res.status(200).json(updated);
 };
 
+
 // Delete URL
 exports.remove = async (req, res) => {
   const deleted = await Url.findOneAndDelete({ shortCode: req.params.shortCode });
   if (!deleted) return res.status(404).json({ error: 'Short URL not found' });
 
-  res.status(200).json({ message: 'Short URL deleted successfully' });
+  res.status(204).send();
 };
-
+ 
 
 
