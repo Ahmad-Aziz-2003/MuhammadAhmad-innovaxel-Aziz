@@ -10,11 +10,18 @@ exports.create = async (req, res) => {
     const shortCode = await generateUniqueShortCode();
     const newUrl = await Url.create({ url, shortCode });
 
-    res.status(201).json(newUrl);
+    res.status(201).json({
+      id: newUrl._id,
+      url: newUrl.url,
+      shortCode: newUrl.shortCode,
+      createdAt: newUrl.createdAt,
+      updatedAt: newUrl.updatedAt
+    });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 };
+
 
 // Get Original URL and increment count
 exports.retrieve = async (req, res) => {
