@@ -47,6 +47,15 @@ exports.remove = async (req, res) => {
 
   res.status(204).send();
 };
- 
+
+
+// Get stats
+exports.stats = async (req, res) => {
+  const data = await Url.findOne({ shortCode: req.params.shortCode });
+  if (!data) return res.status(404).json({ error: 'Short URL not found' });
+
+  res.status(200).json(data);
+};
+
 
 
