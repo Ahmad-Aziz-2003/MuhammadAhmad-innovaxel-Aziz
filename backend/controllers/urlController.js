@@ -25,14 +25,25 @@ exports.create = async (req, res) => {
 
 // Get Original URL and increment count
 exports.retrieve = async (req, res) => {
-  const urlData = await Url.findOne({ shortCode: req.params.shortCode });
-  if (!urlData) return res.status(404).json({ error: 'Short URL not found' });
+  try {
+    const urlData = await Url.findOne({ shortCode: req.params.shortCode });
+    if (!urlData) return res.status(404).json({ error: 'Short URL not found' });
 
-  urlData.accessCount += 1;
-  await urlData.save();
+    urlData.accessCount += 1;
+    await urlData.save();
 
-  res.status(200).json(urlData);
+    res.status(200).json({
+      id: urlData._id,
+      url: urlData.url,
+      shortCode: urlData.shortCode,
+      createdAt: urlData.createdAt,
+      updatedAt: urlData.updatedAt
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 };
+
 
 // Update URL
 exports.update = async (req, res) => {
