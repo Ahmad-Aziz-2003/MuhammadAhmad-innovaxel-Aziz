@@ -1,11 +1,11 @@
-const Url = require('../models/Url');
-const generateUniqueShortCode = require('../utils/generateUniqueShortCode');
+const Url = require("../models/Url");
+const generateUniqueShortCode = require("../utils/generateUniqueShortCode");
 
 // Create Short URL
 exports.create = async (req, res) => {
   try {
     const { url } = req.body;
-    if (!url) return res.status(400).json({ error: 'URL is required' });
+    if (!url) return res.status(400).json({ error: "URL is required" });
 
     const shortCode = await generateUniqueShortCode();
     const newUrl = await Url.create({ url, shortCode });
@@ -15,19 +15,18 @@ exports.create = async (req, res) => {
       url: newUrl.url,
       shortCode: newUrl.shortCode,
       createdAt: newUrl.createdAt,
-      updatedAt: newUrl.updatedAt
+      updatedAt: newUrl.updatedAt,
     });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 };
 
-
 // Get Original URL and increment count
 exports.retrieve = async (req, res) => {
   try {
     const urlData = await Url.findOne({ shortCode: req.params.shortCode });
-    if (!urlData) return res.status(404).json({ error: 'Short URL not found' });
+    if (!urlData) return res.status(404).json({ error: "Short URL not found" });
 
     urlData.accessCount += 1;
     await urlData.save();
@@ -37,13 +36,12 @@ exports.retrieve = async (req, res) => {
       url: urlData.url,
       shortCode: urlData.shortCode,
       createdAt: urlData.createdAt,
-      updatedAt: urlData.updatedAt
+      updatedAt: urlData.updatedAt,
     });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 };
-
 
 // Update URL
 exports.update = async (req, res) => {
@@ -52,28 +50,32 @@ exports.update = async (req, res) => {
     { url: req.body.url },
     { new: true }
   );
-  if (!updated) return res.status(404).json({ error: 'Short URL not found' });
 
-  res.status(200).json(updated);
+  if (!updated) return res.status(404).json({ error: "Short URL not found" });
+
+  res.status(200).json({
+    id: updated._id,
+    url: updated.url,
+    shortCode: updated.shortCode,
+    createdAt: updated.createdAt,
+    updatedAt: updated.updatedAt,
+  });
 };
-
 
 // Delete URL
 exports.remove = async (req, res) => {
-  const deleted = await Url.findOneAndDelete({ shortCode: req.params.shortCode });
-  if (!deleted) return res.status(404).json({ error: 'Short URL not found' });
+  const deleted = await Url.findOneAndDelete({
+    shortCode: req.params.shortCode,
+  });
+  if (!deleted) return res.status(404).json({ error: "Short URL not found" });
 
   res.status(204).send();
 };
 
-
 // Get stats
 exports.stats = async (req, res) => {
   const data = await Url.findOne({ shortCode: req.params.shortCode });
-  if (!data) return res.status(404).json({ error: 'Short URL not found' });
+  if (!data) return res.status(404).json({ error: "Short URL not found" });
 
   res.status(200).json(data);
 };
-
-
-

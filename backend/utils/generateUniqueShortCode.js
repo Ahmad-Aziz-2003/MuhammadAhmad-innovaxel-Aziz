@@ -1,5 +1,5 @@
-const Url = require('../models/Url');
-const { nanoid } = require('nanoid');
+const Url = require("../models/Url");
+const { nanoid } = require("nanoid");
 
 const generateUniqueShortCode = async () => {
   let shortCode;
