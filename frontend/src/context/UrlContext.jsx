@@ -1,5 +1,5 @@
-import React, { createContext, useContext, useState, useCallback } from 'react';
-import axios from 'axios';
+import React, { createContext, useContext, useState, useCallback } from "react";
+import axios from "axios";
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL;
 
@@ -20,7 +20,7 @@ export const UrlProvider = ({ children }) => {
       const res = await axios.get(`${API_BASE}/shorten`);
       setUrls(res.data);
     } catch (err) {
-      setError('Failed to fetch URLs');
+      setError("Failed to fetch URLs");
     }
     setLoading(false);
   }, []);
@@ -32,8 +32,11 @@ export const UrlProvider = ({ children }) => {
       setUrls((prev) => [res.data, ...prev]);
       return { success: true, data: res.data };
     } catch (err) {
-      setError(err.response?.data?.message || 'Error occurred');
-      return { success: false, error: err.response?.data?.message || 'Error occurred' };
+      setError(err.response?.data?.message || "Error occurred");
+      return {
+        success: false,
+        error: err.response?.data?.message || "Error occurred",
+      };
     }
   };
 
@@ -41,11 +44,16 @@ export const UrlProvider = ({ children }) => {
     setError(null);
     try {
       const res = await axios.put(`${API_BASE}/shorten/${shortCode}`, { url });
-      setUrls((prev) => prev.map((u) => (u.shortCode === shortCode ? res.data : u)));
+      setUrls((prev) =>
+        prev.map((u) => (u.shortCode === shortCode ? res.data : u))
+      );
       return { success: true, data: res.data };
     } catch (err) {
-      setError(err.response?.data?.message || 'Error occurred');
-      return { success: false, error: err.response?.data?.message || 'Error occurred' };
+      setError(err.response?.data?.message || "Error occurred");
+      return {
+        success: false,
+        error: err.response?.data?.message || "Error occurred",
+      };
     }
   };
 
@@ -54,7 +62,7 @@ export const UrlProvider = ({ children }) => {
       await axios.delete(`${API_BASE}/shorten/${shortCode}`);
       setUrls((prev) => prev.filter((u) => u.shortCode !== shortCode));
     } catch {
-      setError('Delete failed');
+      setError("Delete failed");
     }
   };
 
@@ -63,12 +71,12 @@ export const UrlProvider = ({ children }) => {
     try {
       const res = await axios.get(`${API_BASE}/shorten/${shortCode}`);
       if (res.data && res.data.url) {
-        window.open(res.data.url, '_blank');
+        window.open(res.data.url, "_blank");
       } else {
-        setVisitError('Original URL not found.');
+        setVisitError("Original URL not found.");
       }
     } catch (err) {
-      setVisitError('Failed to retrieve original URL.');
+      setVisitError("Failed to retrieve original URL.");
     }
   };
 
@@ -90,4 +98,4 @@ export const UrlProvider = ({ children }) => {
       {children}
     </UrlContext.Provider>
   );
-}; 
+};

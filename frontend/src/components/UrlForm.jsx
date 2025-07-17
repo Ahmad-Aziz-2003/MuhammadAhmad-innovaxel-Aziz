@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { useUrlContext } from '../context/UrlContext';
+import React, { useState, useEffect } from "react";
+import { useUrlContext } from "../context/UrlContext";
 
 const UrlForm = ({ editingUrl, onSuccess, onCancel }) => {
-  const [url, setUrl] = useState('');
+  const [url, setUrl] = useState("");
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(null);
   const { createUrl, updateUrl, error } = useUrlContext();
@@ -12,7 +12,7 @@ const UrlForm = ({ editingUrl, onSuccess, onCancel }) => {
       setUrl(editingUrl.url);
       setSuccess(null);
     } else {
-      setUrl('');
+      setUrl("");
       setSuccess(null);
     }
   }, [editingUrl]);
@@ -24,14 +24,14 @@ const UrlForm = ({ editingUrl, onSuccess, onCancel }) => {
     let result;
     if (editingUrl) {
       result = await updateUrl(editingUrl.shortCode, url);
-      if (result.success) setSuccess('Short URL updated!');
+      if (result.success) setSuccess("Short URL updated!");
     } else {
       result = await createUrl(url);
-      if (result.success) setSuccess('Short URL created!');
+      if (result.success) setSuccess("Short URL created!");
     }
     setLoading(false);
     if (result && result.success && onSuccess) onSuccess();
-    if (result && result.success) setUrl('');
+    if (result && result.success) setUrl("");
   };
 
   return (
@@ -50,14 +50,28 @@ const UrlForm = ({ editingUrl, onSuccess, onCancel }) => {
             className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded transition disabled:opacity-50"
             disabled={loading}
           >
-            {editingUrl ? 'Update URL' : 'Shorten URL'}
+            {editingUrl ? "Update URL" : "Shorten URL"}
           </button>
           {editingUrl && (
-            <button type="button" className="bg-gray-200 text-gray-700 px-5 py-2 rounded hover:bg-gray-300" onClick={onCancel}>Cancel</button>
+            <button
+              type="button"
+              className="bg-gray-200 text-gray-700 px-5 py-2 rounded hover:bg-gray-300"
+              onClick={onCancel}
+            >
+              Cancel
+            </button>
           )}
         </div>
-        {error && <div className="text-sm text-blue-600 bg-blue-50 rounded px-2 py-1">{error}</div>}
-        {success && <div className="text-sm text-blue-600 bg-blue-50 rounded px-2 py-1">{success}</div>}
+        {error && (
+          <div className="text-sm text-blue-600 bg-blue-50 rounded px-2 py-1">
+            {error}
+          </div>
+        )}
+        {success && (
+          <div className="text-sm text-blue-600 bg-blue-50 rounded px-2 py-1">
+            {success}
+          </div>
+        )}
       </form>
     </div>
   );
