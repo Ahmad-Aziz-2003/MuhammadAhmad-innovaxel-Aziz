@@ -47,15 +47,20 @@ exports.retrieve = async (req, res) => {
     const urlData = await Url.findOne({ shortCode: req.params.shortCode });
     if (!urlData) return res.status(404).json({ error: "Short URL not found" });
 
+    // Increment accessCount without updating updatedAt
+    await Url.updateOne(
+      { _id: urlData._id },
+      { $inc: { accessCount: 1 } },
+      { timestamps: false }
+    );
     urlData.accessCount += 1;
-    await urlData.save();
 
     res.status(200).json({
       id: urlData._id,
       url: urlData.url,
       shortCode: urlData.shortCode,
       createdAt: urlData.createdAt,
-      updatedAt: urlData.updatedAt,
+      updatedAt: urlData.updatedAt, 
     });
   } catch (err) {
     res.status(500).json({ error: err.message });
