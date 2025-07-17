@@ -22,6 +22,25 @@ exports.create = async (req, res) => {
   }
 };
 
+// Get all short URLs
+exports.getAll = async (req, res) => {
+  try {
+    const urls = await Url.find().sort({ createdAt: -1 });
+    const formatted = urls.map((u) => ({
+      id: u._id,
+      url: u.url,
+      shortCode: u.shortCode,
+      createdAt: u.createdAt,
+      updatedAt: u.updatedAt,
+    //   accessCount: u.accessCount,
+    }));
+    res.status(200).json(formatted);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+
 // Get Original URL and increment count
 exports.retrieve = async (req, res) => {
   try {
