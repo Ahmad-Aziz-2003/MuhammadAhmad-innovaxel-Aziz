@@ -1,9 +1,13 @@
+import React from 'react';
+import UrlForm from './components/UrlForm';
+import UrlStats from './components/UrlStats';
+
 function App() {
   return (
-    <div className=" bg-yellow-500 text-center p-6">
-      <h1 className="text-7xl font-bold text-blue-600">
-        Tailwind + Vite + React 🚀
-      </h1>
+    <div style={{ padding: '20px' }}>
+      <h1>URL Shortener</h1>
+      <UrlForm />
+      <UrlStats />
     </div>
   );
 }
