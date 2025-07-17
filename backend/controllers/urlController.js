@@ -32,14 +32,13 @@ exports.getAll = async (req, res) => {
       shortCode: u.shortCode,
       createdAt: u.createdAt,
       updatedAt: u.updatedAt,
-    //   accessCount: u.accessCount,
+      //   accessCount: u.accessCount,
     }));
     res.status(200).json(formatted);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 };
-
 
 // Get Original URL and increment count
 exports.retrieve = async (req, res) => {
@@ -60,7 +59,7 @@ exports.retrieve = async (req, res) => {
       url: urlData.url,
       shortCode: urlData.shortCode,
       createdAt: urlData.createdAt,
-      updatedAt: urlData.updatedAt, 
+      updatedAt: urlData.updatedAt,
     });
   } catch (err) {
     res.status(500).json({ error: err.message });
