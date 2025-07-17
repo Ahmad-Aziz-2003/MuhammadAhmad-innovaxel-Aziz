@@ -117,7 +117,7 @@ You can add relevant screenshots here:
 
 * All code is committed on the `dev` branch.
 * `main` branch includes this README only.
-* Reviewer Added: `Junaid Hussnain`
+* Reviewer Added: `Junaid Hussnain`(junaid@innovaxel.com)
 * Repository is public as per submission guidelines.
 
 ---
